@@ -53,6 +53,7 @@ help_opt() {
     echo "  organizer.sh [-d] [PATH]"
     echo "DESCRIPTION"
     echo -e "  Les fichiers sélectionnés seront envoyés vers ce répertoire. \n S'il n'existe pas il sera crée"
+    echo "   Default: $DEST_DIR"
     ;;
   "s")
     echo "NAME"
@@ -61,6 +62,7 @@ help_opt() {
     echo "  organizer.sh [-s] [PATH]"
     echo "DESCRIPTION"
     echo -e "  Les fichiers sélectionnés depuis ce répertoire. \n   Il doit exister au préalable"
+    echo "   Default: $SOURCE_DIR"
     ;;
   "p")
     echo "NAME"
@@ -69,6 +71,7 @@ help_opt() {
     echo "  organizer.sh [-p] [REGEX]"
     echo "DESCRIPTION"
     echo -e "  Les fichiers seront sélectionnés selon ce pattern,  attention le pattern sera retiré du nom, si vous avez des \n  problèmes d'unicité ajoutez l'option -u"
+    echo "   Default: $PATTERN"
     ;;
   "u")
     echo "NAME"
@@ -141,7 +144,7 @@ display_cron_help() {
   echo "Vous pouvez ajouter ce script à vos tâches de fond:"
   echo "\$(crontab -e) pour ouvrir l'éditeur CRON"
   echo "exemple: Pour lancer le script toutes les 5 minutes"
-  echo "\$(*/5 * * * * /chemin/vers/votre/script.sh)"
+  echo "\$(*/5 * * * * $PWD/$(basename "$0"))"
 
   exit
 }
