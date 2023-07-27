@@ -86,7 +86,7 @@ help_opt() {
     echo "DESCRIPTION"
     echo -e "  Instructions pour ajouter le script en tâche de fond"
     ;;
-    "n")
+  "n")
     echo "NAME"
     echo "  -n -- Nom du fichier"
     echo "SYNOPSIS"
@@ -117,8 +117,8 @@ move_files() {
   for file in "$SOURCE_DIR"/*; do
     if [ -f "$file" ] && [[ $(basename "$file") =~ $PATTERN ]]; then
       if [ "$KEEP_NAME" -eq 1 ]; then
-	    new_name=$(basename "$file")
-	  else
+        new_name=$(basename "$file")
+      else
         new_name=$(basename "$file" | awk -F "$PATTERN" '{print $2}')
       fi
 
@@ -161,7 +161,10 @@ while getopts ":h:d:s:p:uc:n" Option; do
   u) UNIQ_NAME=1 ;;
   n) KEEP_NAME=1 ;;
   c) display_cron_help ;;
-  *) echo "Invalid option" ; exit ;;
+  *)
+    echo "Invalid option"
+    exit
+    ;;
   esac
 done
 
