@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION="1.1"
+VERSION="1.2"
 SOURCE_DIR=~/Desktop
 DEST_DIR=~/Pictures/screenshots
 PATTERN=^Capture\ d’écran
@@ -38,47 +38,56 @@ display_copyright() {
 
 help_opt() {
     echo "*** AIDE ***"
-    echo "Les Options disponibles sont: [-dspu]"
-    echo "Vous pouvez faire: $O -h [dspu] pour plus d'informations"
-    
     case "$1" in
+    	"" ) 
+			echo "Les Options disponibles sont: [-dspuc]"
+		    echo "Ce script vous aidera à organiser vos screenshots sur MACOS"
+		    echo "Vous pourrez également le customiser pour vos besoins personnels"
+		    echo "Vous pouvez faire: $O -h [dspuc] pour plus d'informations" 
+		    ;;
         "d" )
             echo "NAME"
             echo "  -d -- Destination"
             echo "SYNOPSIS"
             echo "  organizer.sh [-d] [PATH]"
             echo "DESCRIPTION"
-            echo -e "  Les fichiers sélectionnés seront envoyés vers ce répertoire. \n S'il n'existe pas il sera crée" ;;
+            echo -e "  Les fichiers sélectionnés seront envoyés vers ce répertoire. \n S'il n'existe pas il sera crée" 
+            ;;
         "s" )
             echo "NAME"
             echo "  -s -- Source"
             echo "SYNOPSIS"
             echo "  organizer.sh [-s] [PATH]"
             echo "DESCRIPTION"
-            echo -e "  Les fichiers sélectionnés depuis ce répertoire. \n   Il doit exister au préalable" ;;
+            echo -e "  Les fichiers sélectionnés depuis ce répertoire. \n   Il doit exister au préalable" 
+            ;;
         "p" )
             echo "NAME"
             echo "  -p -- Pattern"
             echo "SYNOPSIS"
             echo "  organizer.sh [-p] [REGEX]"
             echo "DESCRIPTION"
-            echo -e "  Les fichiers seront sélectionnés selon ce pattern,  attention le pattern sera retiré du nom, si vous avez des \n  problèmes d'unicité ajoutez l'option -u" ;;
+            echo -e "  Les fichiers seront sélectionnés selon ce pattern,  attention le pattern sera retiré du nom, si vous avez des \n  problèmes d'unicité ajoutez l'option -u" 
+            ;;
         "u" )
             echo "NAME"
             echo "  -u -- Unique"
             echo "SYNOPSIS"
             echo "  organizer.sh [-u]"
             echo "DESCRIPTION"
-            echo -e "  Les fichiers seront automatiquement renommés. \n  Pour des questions d'unicité, nous ajouterons un identifiant unique date +%s)_\$RANDOM" ;;
+            echo -e "  Les fichiers seront automatiquement renommés. \n  Pour des questions d'unicité, nous ajouterons un identifiant unique date +%s)_\$RANDOM" 
+            ;;
         "c" )
             echo "NAME"
             echo "  -c -- Cron, tâche de fond"
             echo "SYNOPSIS"
             echo "  organizer.sh [-c]"
             echo "DESCRIPTION"
-            echo -e "  Instructions pour ajouter le script en tâche de fond" ;;
+            echo -e "  Instructions pour ajouter le script en tâche de fond" 
+            ;;
         * )
-			echo "Option non reconnue" ;;
+			echo "Option non reconnue" 
+			;;
     esac
     
     exit
@@ -126,10 +135,14 @@ display_cron_help() {
 
 display_copyright
 
-while getopts ":h:d:s:p:uc" Option; do
+if [ "$#" -eq 1 ] && [ "$1" = "-h" ]; then
+    help_opt ""
+fi
+
+while getopts ":h:d:s:p:uc:" Option; do
     case $Option in
-    	h ) help_opt "${OPTARG}" ;;
-        d ) DEST_DIR="${OPTARG}" ;;
+		h ) help_opt "${OPTARG}" ;;
+		d ) DEST_DIR="${OPTARG}" ;;
 		s ) SOURCE_DIR="${OPTARG}" ;;
 		p ) PATTERN="${OPTARG}" ;;
 		u ) UNIQ_NAME=1 ;;
