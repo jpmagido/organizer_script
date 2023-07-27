@@ -22,12 +22,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION="1.2"
+VERSION="1.3"
 SOURCE_DIR=~/Desktop
 DEST_DIR=~/Pictures/screenshots
 PATTERN=^Capture\ d’écran
 UNIQ_NAME=0
 FILE_MOVED=0
+KEEP_NAME=0
 
 display_copyright() {
   echo "Nom du script: $(basename "$0")"
@@ -85,6 +86,14 @@ help_opt() {
     echo "DESCRIPTION"
     echo -e "  Instructions pour ajouter le script en tâche de fond"
     ;;
+    "n")
+    echo "NAME"
+    echo "  -n -- Nom du fichier"
+    echo "SYNOPSIS"
+    echo "  organizer.sh [-n]"
+    echo "DESCRIPTION"
+    echo -e "  On garde le nom original du fichier quand on le déplace"
+    ;;
   *)
     echo "Option non reconnue"
     ;;
@@ -107,10 +116,14 @@ move_files() {
 
   for file in "$SOURCE_DIR"/*; do
     if [ -f "$file" ] && [[ $(basename "$file") =~ $PATTERN ]]; then
-      new_name=$(basename "$file" | awk -F 'Capture d’écran' '{print $2}')
+      if [ "$KEEP_NAME" -eq 1 ]; then
+	    new_name=$(basename "$file")
+	  else
+        new_name=$(basename "$file" | awk -F "$PATTERN" '{print $2}')
+      fi
 
       if [ $UNIQ_NAME -eq 1 ]; then
-        mv "$file" "$DEST_DIR/$new_name$(date +%s)_$RANDOM"
+        mv "$file" "$DEST_DIR/$(date +"%Y-%m-%d-%H-%M-%S")_$RANDOM$new_name"
       else
         mv "$file" "$DEST_DIR/$new_name"
       fi
@@ -139,14 +152,16 @@ if [ "$#" -eq 1 ] && [ "$1" = "-h" ]; then
   help_opt ""
 fi
 
-while getopts ":h:d:s:p:uc:" Option; do
+while getopts ":h:d:s:p:uc:n" Option; do
   case $Option in
   h) help_opt "${OPTARG}" ;;
   d) DEST_DIR="${OPTARG}" ;;
   s) SOURCE_DIR="${OPTARG}" ;;
   p) PATTERN="${OPTARG}" ;;
   u) UNIQ_NAME=1 ;;
+  n) KEEP_NAME=1 ;;
   c) display_cron_help ;;
+  *) echo "Invalid option" ; exit ;;
   esac
 done
 
