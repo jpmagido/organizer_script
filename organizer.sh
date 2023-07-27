@@ -41,10 +41,10 @@ help_opt() {
   echo "*** AIDE ***"
   case "$1" in
   "")
-    echo "Les Options disponibles sont: [-dspuc]"
+    echo "Les Options disponibles sont: [-dspucn]"
     echo "Ce script vous aidera à organiser vos screenshots sur MACOS"
     echo "Vous pourrez également le customiser pour vos besoins personnels"
-    echo "Vous pouvez faire: $O -h [dspuc] pour plus d'informations"
+    echo "Vous pouvez faire: $O -h [dspucn] pour plus d'informations"
     ;;
   "d")
     echo "NAME"
@@ -123,7 +123,7 @@ move_files() {
       fi
 
       if [ $UNIQ_NAME -eq 1 ]; then
-        mv "$file" "$DEST_DIR/$(date +"%Y-%m-%d-%H-%M-%S")_$RANDOM$new_name"
+        mv "$file" "$DEST_DIR/$(date +"%Y-%m-%d-%H-%M-%S")_$RANDOM_$new_name"
       else
         mv "$file" "$DEST_DIR/$new_name"
       fi
@@ -152,7 +152,7 @@ if [ "$#" -eq 1 ] && [ "$1" = "-h" ]; then
   help_opt ""
 fi
 
-while getopts ":h:d:s:p:uc:n" Option; do
+while getopts ":h:d:s:p:ucn" Option; do
   case $Option in
   h) help_opt "${OPTARG}" ;;
   d) DEST_DIR="${OPTARG}" ;;
